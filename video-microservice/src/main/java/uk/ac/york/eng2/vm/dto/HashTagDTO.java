@@ -1,5 +1,8 @@
 package uk.ac.york.eng2.vm.dto;
 
+import io.micronaut.serde.annotation.Serdeable;
+
+@Serdeable
 public class HashTagDTO {
 
     private String name;

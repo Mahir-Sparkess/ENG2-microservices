@@ -48,7 +48,7 @@ public class VideosController {
     }
 
     @Get("/{id}/hashtags")
-    public Iterable<HashTag> getTags(Long id){
+    public Iterable<HashTag> getTags(long id){
         Optional<Video> video = videosRepo.findById(id);
         if (video.isEmpty()){
             return null;

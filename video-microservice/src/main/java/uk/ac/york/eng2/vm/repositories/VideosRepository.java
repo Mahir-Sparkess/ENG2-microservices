@@ -12,8 +12,9 @@ import java.util.Optional;
 @Repository
 public interface VideosRepository extends CrudRepository<Video, Long> {
     @Join(value = "viewers", type = Join.Type.LEFT_FETCH)
+    @Join(value = "tags", type = Join.Type.LEFT_FETCH)
     @Override
     Optional<Video> findById(@NotNull Long id);
 
-    Optional<VideoDTO> findOne (Long id);
+    Optional<VideoDTO> findOne (long id);
 }

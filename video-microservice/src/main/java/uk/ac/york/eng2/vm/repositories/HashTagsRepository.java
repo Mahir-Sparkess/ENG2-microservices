@@ -1,5 +1,6 @@
 package uk.ac.york.eng2.vm.repositories;
 
+import io.micronaut.data.annotation.Join;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
 import uk.ac.york.eng2.vm.domain.HashTag;
@@ -11,7 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface HashTagsRepository extends CrudRepository<HashTag, Long> {
+    @Join(value = "taggedBy", type = Join.Type.RIGHT_FETCH)
     @Override
     Optional<HashTag> findById(@NotNull Long id);
-    Optional<HashTagDTO> findOne (Long id);
+    Optional<HashTagDTO> findOne(long id);
 }
