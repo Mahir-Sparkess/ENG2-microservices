@@ -8,6 +8,7 @@ import uk.ac.york.eng2.vm.domain.User;
 import uk.ac.york.eng2.vm.domain.Video;
 import uk.ac.york.eng2.vm.dto.HashTagDTO;
 import uk.ac.york.eng2.vm.dto.VideoDTO;
+import uk.ac.york.eng2.vm.events.VideosProducer;
 import uk.ac.york.eng2.vm.repositories.HashTagsRepository;
 import uk.ac.york.eng2.vm.repositories.UsersRepository;
 import uk.ac.york.eng2.vm.repositories.VideosRepository;
@@ -27,6 +28,9 @@ public class VideosController {
 
     @Inject
     HashTagsRepository hashTagsRepo;
+
+    @Inject
+    VideosProducer producer;
 
     @Get("/")
     public Iterable<Video> list() {
@@ -62,6 +66,7 @@ public class VideosController {
         video.setTitle(videoDetails.getTitle());
 
         videosRepo.save(video);
+        producer.uploadVideo(video.getId(), video);
 
         return HttpResponse.created(URI.create("/videos/" + video.getId()));
     }
@@ -99,6 +104,7 @@ public class VideosController {
 
         if (v.getViewers().add(u)){
             videosRepo.update(v);
+            producer.viewVideo(videoId, u);
         }
         return HttpResponse.ok(String.format("User %d has viewed video %d", userId, videoId));
     }
