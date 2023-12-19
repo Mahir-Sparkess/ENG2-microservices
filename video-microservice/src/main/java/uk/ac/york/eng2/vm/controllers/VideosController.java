@@ -121,7 +121,7 @@ public class VideosController {
         if (v.getTags().add(ht)){
             videosRepo.update(v);
         }
-        return HttpResponse.ok(String.format("User %d has viewed video %d", tagId, videoId));
+        return HttpResponse.ok(String.format("HashTag %d added to video %d", tagId, videoId));
     }
 
     @Delete("/{id}")

@@ -2,12 +2,18 @@ package uk.ac.york.eng2.cli.domain;
 
 import io.micronaut.serde.annotation.Serdeable;
 
+import java.util.Set;
+
 @Serdeable
 public class Video {
 
     private Long id;
 
     private String title;
+
+    private Set<User> viewers;
+
+    private Set<HashTag> tags;
 
     public void setId(Long id) {
         this.id = id;
@@ -23,6 +29,22 @@ public class Video {
 
     public String getTitle(){
         return title;
+    }
+
+    public Set<User> getViewers() {
+        return viewers;
+    }
+
+    public void setViewers(Set<User> viewers) {
+        this.viewers = viewers;
+    }
+
+    public Set<HashTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<HashTag> tags) {
+        this.tags = tags;
     }
 
     @Override
