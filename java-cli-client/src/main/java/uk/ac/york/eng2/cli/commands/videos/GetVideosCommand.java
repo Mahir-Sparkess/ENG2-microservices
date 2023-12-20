@@ -1,4 +1,4 @@
-package uk.ac.york.eng2.cli.videos;
+package uk.ac.york.eng2.cli.commands.videos;
 
 import jakarta.inject.Inject;
 import picocli.CommandLine;

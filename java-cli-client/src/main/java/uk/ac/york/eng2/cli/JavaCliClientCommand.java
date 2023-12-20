@@ -1,20 +1,45 @@
 package uk.ac.york.eng2.cli;
 
 import io.micronaut.configuration.picocli.PicocliRunner;
-import io.micronaut.context.ApplicationContext;
 
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
-import uk.ac.york.eng2.cli.videos.GetVideosCommand;
+import uk.ac.york.eng2.cli.commands.hashtags.*;
+import uk.ac.york.eng2.cli.commands.users.*;
+import uk.ac.york.eng2.cli.commands.videos.*;
 
 @Command(name = "java-cli-client", description = "...",
         mixinStandardHelpOptions = true,
         subcommands = {
-        GetVideosCommand.class
-        }
-)
+                //Videos Commands
+                GetVideosCommand.class,
+                GetVideoCommand.class,
+                GetVideoTagsCommand.class,
+                GetViewersCommand.class,
+                AddVideoCommand.class,
+                AddVideoHashTagCommand.class,
+                AddVideoViewerCommand.class,
+                UpdateVideoCommand.class,
+                DeleteVideoCommand.class,
+                DeleteViewerCommand.class,
+                DeleteVideoHashTagCommand.class,
+                LikeVideoCommand.class,
+                DislikeVideoCommand.class,
+                //Users Commands
+                AddUserCommand.class,
+                DeleteUserCommand.class,
+                GetUsersCommand.class,
+                GetUserCommand.class,
+                GetViewedCommand.class,
+                UpdateUserCommand.class,
+                //Hashtags Commands
+                AddHashTagCommand.class,
+                DeleteHashTagCommand.class,
+                GetHashTagsCommand.class,
+                GetHashTagCommand.class,
+                GetTaggedVideosCommand.class,
+                UpdateHashTagCommand.class
+        })
 public class JavaCliClientCommand implements Runnable {
 
     @Option(names = {"-v", "--verbose"}, description = "...")

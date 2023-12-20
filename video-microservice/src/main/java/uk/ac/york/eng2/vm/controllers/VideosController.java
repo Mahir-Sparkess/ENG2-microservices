@@ -8,6 +8,7 @@ import uk.ac.york.eng2.vm.domain.User;
 import uk.ac.york.eng2.vm.domain.Video;
 import uk.ac.york.eng2.vm.dto.HashTagDTO;
 import uk.ac.york.eng2.vm.dto.VideoDTO;
+import uk.ac.york.eng2.vm.events.VideosProducer;
 import uk.ac.york.eng2.vm.repositories.HashTagsRepository;
 import uk.ac.york.eng2.vm.repositories.UsersRepository;
 import uk.ac.york.eng2.vm.repositories.VideosRepository;
@@ -15,6 +16,7 @@ import uk.ac.york.eng2.vm.repositories.VideosRepository;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller("/videos")
 public class VideosController {
@@ -27,6 +29,9 @@ public class VideosController {
 
     @Inject
     HashTagsRepository hashTagsRepo;
+
+    @Inject
+    VideosProducer producer;
 
     @Get("/")
     public Iterable<Video> list() {
@@ -62,6 +67,7 @@ public class VideosController {
         video.setTitle(videoDetails.getTitle());
 
         videosRepo.save(video);
+        producer.uploadVideo(video.getId(), video);
 
         return HttpResponse.created(URI.create("/videos/" + video.getId()));
     }
@@ -99,6 +105,7 @@ public class VideosController {
 
         if (v.getViewers().add(u)){
             videosRepo.update(v);
+            producer.viewVideo(videoId, u);
         }
         return HttpResponse.ok(String.format("User %d has viewed video %d", userId, videoId));
     }
@@ -121,7 +128,7 @@ public class VideosController {
         if (v.getTags().add(ht)){
             videosRepo.update(v);
         }
-        return HttpResponse.ok(String.format("User %d has viewed video %d", tagId, videoId));
+        return HttpResponse.ok(String.format("HashTag %d added to video %d", tagId, videoId));
     }
 
     @Delete("/{id}")
@@ -160,6 +167,33 @@ public class VideosController {
         Video v = video.get();
         v.getTags().removeIf(ht -> tagId == ht.getId());
         videosRepo.update(v);
+
+        return HttpResponse.ok();
+    }
+
+    @Put("/{id}/like")
+    @Transactional
+    public HttpResponse<Void> likeVideo(Long id){
+        Optional<Video> video = videosRepo.findById(id);
+        if (video.isEmpty()){
+            return HttpResponse.notFound();
+        }
+
+        Set<HashTag> tags = video.get().getTags();
+        producer.likeVideo(id, tags);
+
+        return HttpResponse.ok();
+    }
+    @Put("/{id}/dislike")
+    @Transactional
+    public HttpResponse<Void> dislikeVideo(Long id){
+        Optional<Video> video = videosRepo.findById(id);
+        if (video.isEmpty()){
+            return HttpResponse.notFound();
+        }
+
+        Set<HashTag> tags = video.get().getTags();
+        producer.dislikeVideo(id, tags);
 
         return HttpResponse.ok();
     }
