@@ -16,6 +16,7 @@ import uk.ac.york.eng2.vm.repositories.VideosRepository;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller("/videos")
 public class VideosController {
@@ -166,6 +167,33 @@ public class VideosController {
         Video v = video.get();
         v.getTags().removeIf(ht -> tagId == ht.getId());
         videosRepo.update(v);
+
+        return HttpResponse.ok();
+    }
+
+    @Put("/{id}/like")
+    @Transactional
+    public HttpResponse<Void> likeVideo(Long id){
+        Optional<Video> video = videosRepo.findById(id);
+        if (video.isEmpty()){
+            return HttpResponse.notFound();
+        }
+
+        Set<HashTag> tags = video.get().getTags();
+        producer.likeVideo(id, tags);
+
+        return HttpResponse.ok();
+    }
+    @Put("/{id}/dislike")
+    @Transactional
+    public HttpResponse<Void> dislikeVideo(Long id){
+        Optional<Video> video = videosRepo.findById(id);
+        if (video.isEmpty()){
+            return HttpResponse.notFound();
+        }
+
+        Set<HashTag> tags = video.get().getTags();
+        producer.dislikeVideo(id, tags);
 
         return HttpResponse.ok();
     }

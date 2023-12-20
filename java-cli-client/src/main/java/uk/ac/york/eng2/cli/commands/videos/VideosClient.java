@@ -43,4 +43,10 @@ public interface VideosClient {
 
     @Delete("/{videoId}/hashtags/{tagId}")
     public HttpResponse<String> removeTag(long videoId, long tagId);
+
+    @Put("/{id}/like")
+    public HttpResponse<Void> likeVideo(Long id);
+
+    @Put("/{id}/dislike")
+    public HttpResponse<Void> dislikeVideo(Long id);
 }

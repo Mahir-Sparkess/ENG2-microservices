@@ -23,6 +23,8 @@ import uk.ac.york.eng2.cli.commands.videos.*;
                 DeleteVideoCommand.class,
                 DeleteViewerCommand.class,
                 DeleteVideoHashTagCommand.class,
+                LikeVideoCommand.class,
+                DislikeVideoCommand.class,
                 //Users Commands
                 AddUserCommand.class,
                 DeleteUserCommand.class,
