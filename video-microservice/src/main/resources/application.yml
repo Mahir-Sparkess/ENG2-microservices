@@ -6,7 +6,7 @@ datasources:
     driver-class-name: org.mariadb.jdbc.Driver
     db-type: mariadb
     dialect: MYSQL
-    url: jdbc:mariadb://localhost:3306/vm
+    url: jdbc:mariadb://db/vm
     username: vm
     password: vmsecret
 netty:
