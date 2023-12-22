@@ -1,27 +1,29 @@
 micronaut:
+  server:
+    port: 8082
   application:
-    name: videoMicroservice
+    name: trendingHashtagMicroservice
 datasources:
   default:
     driver-class-name: org.mariadb.jdbc.Driver
     db-type: mariadb
     dialect: MYSQL
-    url: jdbc:mariadb://db/vm
-    username: vm
-    password: vmsecret
-netty:
-  default:
-    allocator:
-      max-order: 3
+    url: jdbc:mariadb://localhost:3306/thm
+    username: thm
+    password: thmsecret
 jpa:
   default:
     entity-scan:
       packages:
-        - uk.ac.york.eng2.vm.domain
+        - uk.ac.york.eng2.thm.domain
     properties:
       hibernate:
         hbm2ddl:
           auto: update
+netty:
+  default:
+    allocator:
+      max-order: 3
 kafka:
   bootstrap:
     servers: ${KAFKA_BOOTSTRAP_SERVERS:`localhost:9094`}

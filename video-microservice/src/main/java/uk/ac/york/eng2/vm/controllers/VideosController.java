@@ -116,11 +116,11 @@ public class VideosController {
         Optional<Video> video = videosRepo.findById(videoId);
         Optional<HashTag> tag = hashTagsRepo.findById(tagId);
 
-        if (tag.isEmpty()){
-            return HttpResponse.notFound(String.format("HashTag %d not found", tagId));
-        }
         if (video.isEmpty()){
             return HttpResponse.notFound(String.format("Video %d not found", videoId));
+        }
+        if (tag.isEmpty()){
+            return HttpResponse.notFound(String.format("HashTag %d not found", tagId));
         }
         Video v = video.get();
         HashTag ht = tag.get();
@@ -180,7 +180,7 @@ public class VideosController {
         }
 
         Set<HashTag> tags = video.get().getTags();
-        producer.likeVideo(id, tags);
+        producer.likeDislikeVideo(id, "like");
 
         return HttpResponse.ok();
     }
@@ -193,7 +193,7 @@ public class VideosController {
         }
 
         Set<HashTag> tags = video.get().getTags();
-        producer.dislikeVideo(id, tags);
+        producer.likeDislikeVideo(id, "dislike");
 
         return HttpResponse.ok();
     }

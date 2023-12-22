@@ -1,11 +1,10 @@
-package uk.ac.york.eng2.vm.repositories;
+package uk.ac.york.eng2.thm.repositories;
 
 import io.micronaut.data.annotation.Join;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
-import uk.ac.york.eng2.vm.domain.HashTag;
-import uk.ac.york.eng2.vm.domain.Video;
-import uk.ac.york.eng2.vm.dto.HashTagDTO;
+import uk.ac.york.eng2.thm.domain.HashTag;
+import uk.ac.york.eng2.thm.dto.HashTagDTO;
 
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
