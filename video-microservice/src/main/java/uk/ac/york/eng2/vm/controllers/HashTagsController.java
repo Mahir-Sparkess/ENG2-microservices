@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import uk.ac.york.eng2.vm.domain.HashTag;
 import uk.ac.york.eng2.vm.domain.Video;
 import uk.ac.york.eng2.vm.dto.HashTagDTO;
+import uk.ac.york.eng2.vm.events.VideosProducer;
 import uk.ac.york.eng2.vm.repositories.HashTagsRepository;
 import uk.ac.york.eng2.vm.repositories.UsersRepository;
 import uk.ac.york.eng2.vm.repositories.VideosRepository;
@@ -16,6 +17,9 @@ import java.util.Optional;
 
 @Controller("/hashtags")
 public class HashTagsController {
+    @Inject
+    VideosProducer producer;
+
     @Inject
     VideosRepository videosRepo;
 
@@ -49,6 +53,7 @@ public class HashTagsController {
         HashTag hashtag = new HashTag();
         hashtag.setName(hashtagDetails.getName());
         hashTagsRepo.save(hashtag);
+        //producer.createHashTag(hashtag.getId(), hashtag.getName());
         return HttpResponse.created(URI.create("/users/" + hashtag.getId()));
     }
 
