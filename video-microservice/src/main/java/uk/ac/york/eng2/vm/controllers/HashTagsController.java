@@ -53,7 +53,7 @@ public class HashTagsController {
         HashTag hashtag = new HashTag();
         hashtag.setName(hashtagDetails.getName());
         hashTagsRepo.save(hashtag);
-        //producer.createHashTag(hashtag.getId(), hashtag.getName());
+        producer.createHashTag(hashtag.getId(), hashtag.getName());
         return HttpResponse.created(URI.create("/users/" + hashtag.getId()));
     }
 
