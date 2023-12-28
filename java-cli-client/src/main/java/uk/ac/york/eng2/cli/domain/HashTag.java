@@ -11,7 +11,7 @@ public class HashTag {
 
     private String name;
 
-    private Set<Video> taggedBy;
+    private Set<Video> tagged;
 
     public Long getId() {
         return id;
@@ -30,11 +30,11 @@ public class HashTag {
     }
 
     public Set<Video> getTaggedBy() {
-        return taggedBy;
+        return tagged;
     }
 
     public void setTaggedBy(Set<Video> taggedBy) {
-        this.taggedBy = taggedBy;
+        this.tagged = taggedBy;
     }
 
     @Override

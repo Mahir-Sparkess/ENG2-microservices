@@ -6,7 +6,7 @@ datasources:
     driver-class-name: org.mariadb.jdbc.Driver
     db-type: mariadb
     dialect: MYSQL
-    url: jdbc:mariadb://db/vm
+    url: jdbc:mariadb://localhost:3306/vm
     username: vm
     password: vmsecret
 netty:
@@ -23,5 +23,6 @@ jpa:
         hbm2ddl:
           auto: update
 kafka:
+#  enabled: false
   bootstrap:
     servers: ${KAFKA_BOOTSTRAP_SERVERS:`localhost:9094`}

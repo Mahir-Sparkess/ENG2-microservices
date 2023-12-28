@@ -11,7 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface HashTagsRepository extends CrudRepository<HashTag, Long> {
+
     @Override
     Optional<HashTag> findById(@NotNull Long id);
-    Optional<HashTagDTO> findOne(long id);
+    Optional<HashTag> findByName(@NotNull String name);
+
+    Iterable<HashTag> findTop10ByLatestActivityGreaterThanEqualsOrderByLikesDesc(long one_hour_ago);
 }

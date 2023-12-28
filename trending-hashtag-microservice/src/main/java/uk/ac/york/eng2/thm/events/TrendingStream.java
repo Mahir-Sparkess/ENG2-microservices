@@ -16,7 +16,7 @@ import java.util.Properties;
 @Factory
 public class TrendingStream {
 
-    public static final String TOPIC_LIKES_BY_HOUR = "hashtag-likes-by-hour";
+    public static final String TOPIC_VIEWS_BY_HOUR = "hashtag-views-by-hour";
 
     @Inject
     private SerdeRegistry serdeRegistry;
@@ -24,19 +24,19 @@ public class TrendingStream {
     @Singleton
     public KStream<WindowedIdentifier, Long> likesByHour(ConfiguredStreamBuilder builder){
         Properties props = builder.getConfiguration();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "likes-metrics");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "trend-metric");
         props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE);
 
         KStream<Long, HashTag> hashTagStream = builder
-                .stream(TrendingProducer.TOPIC_TAG_LIKE, Consumed.with(Serdes.Long(), serdeRegistry.getSerde(HashTag.class)));
+                .stream(TrendingProducer.TOPIC_TRENDING_METRIC, Consumed.with(Serdes.Long(), serdeRegistry.getSerde(HashTag.class)));
 
         KStream<WindowedIdentifier, Long> stream = hashTagStream.groupByKey()
                 .windowedBy(TimeWindows.of(Duration.ofHours(1)).advanceBy(Duration.ofHours(1)))
-                .count(Materialized.as("likes-by-hour"))
+                .count(Materialized.as("views-by-hour"))
                 .toStream()
                 .selectKey((k, v) -> new WindowedIdentifier(k.key(), k.window().start(), k.window().start()));
 
-        stream.to(TOPIC_LIKES_BY_HOUR,
+        stream.to(TOPIC_VIEWS_BY_HOUR,
                 Produced.with(serdeRegistry.getSerde(WindowedIdentifier.class), Serdes.Long()));
 
         return stream;

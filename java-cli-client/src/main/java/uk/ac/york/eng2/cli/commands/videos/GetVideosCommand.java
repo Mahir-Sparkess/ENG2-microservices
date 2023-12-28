@@ -10,11 +10,11 @@ import uk.ac.york.eng2.cli.domain.Video;
 public class GetVideosCommand implements Runnable {
 
     @Inject
-    private VideosClient client;
+    private VideoControllerClient client;
 
     @Override
     public void run() {
-        for (Video v : client.list()) {
+        for (Video v : client.getVideos()) {
             System.out.println(v);
         }
     }
