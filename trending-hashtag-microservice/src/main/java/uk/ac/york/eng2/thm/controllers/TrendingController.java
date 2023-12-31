@@ -16,10 +16,10 @@ public class TrendingController {
     HashTagsRepository repo;
 
     @Get("/")
-    public Iterable<HashTag> hello(){
+    public Iterable<HashTag> trending(){
         long currentTime = Instant.now().toEpochMilli();
         long oneHourAgo = currentTime - TimeUnit.HOURS.toMillis(1);
-        return repo.findTop10ByLatestActivityGreaterThanEqualsOrderByLikesDesc(oneHourAgo);
+        return repo.findTop10ByLatestActivityGreaterThanEqualsOrderByTrendingActivityDesc(oneHourAgo);
     }
 
     @Get("/all")

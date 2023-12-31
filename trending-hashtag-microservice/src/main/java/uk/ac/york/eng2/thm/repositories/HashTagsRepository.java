@@ -16,5 +16,5 @@ public interface HashTagsRepository extends CrudRepository<HashTag, Long> {
     Optional<HashTag> findById(@NotNull Long id);
     Optional<HashTag> findByName(@NotNull String name);
 
-    Iterable<HashTag> findTop10ByLatestActivityGreaterThanEqualsOrderByLikesDesc(long one_hour_ago);
+    Iterable<HashTag> findTop10ByLatestActivityGreaterThanEqualsOrderByTrendingActivityDesc(long one_hour_ago);
 }

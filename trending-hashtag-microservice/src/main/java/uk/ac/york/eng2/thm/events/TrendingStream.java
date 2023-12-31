@@ -16,7 +16,7 @@ import java.util.Properties;
 @Factory
 public class TrendingStream {
 
-    public static final String TOPIC_VIEWS_BY_HOUR = "hashtag-views-by-hour";
+    public static final String TOPIC_LIKES_BY_HOUR = "hashtag-likes-by-hour";
 
     @Inject
     private SerdeRegistry serdeRegistry;
@@ -32,11 +32,11 @@ public class TrendingStream {
 
         KStream<WindowedIdentifier, Long> stream = hashTagStream.groupByKey()
                 .windowedBy(TimeWindows.of(Duration.ofHours(1)).advanceBy(Duration.ofHours(1)))
-                .count(Materialized.as("views-by-hour"))
+                .count(Materialized.as("likes-by-hour"))
                 .toStream()
                 .selectKey((k, v) -> new WindowedIdentifier(k.key(), k.window().start(), k.window().start()));
 
-        stream.to(TOPIC_VIEWS_BY_HOUR,
+        stream.to(TOPIC_LIKES_BY_HOUR,
                 Produced.with(serdeRegistry.getSerde(WindowedIdentifier.class), Serdes.Long()));
 
         return stream;

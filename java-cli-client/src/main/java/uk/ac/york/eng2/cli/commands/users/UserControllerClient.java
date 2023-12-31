@@ -9,7 +9,7 @@ import uk.ac.york.eng2.cli.domain.Video;
 import uk.ac.york.eng2.cli.dto.UserDTO;
 /* protected region imports end */
 
-@Client("${users.url:`http://localhost:8080/users}")
+@Client("${users.url:`http://localhost:8080/users`}")
 public interface UserControllerClient {
 
 	@Get("/")

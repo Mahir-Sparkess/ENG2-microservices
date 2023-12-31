@@ -6,7 +6,7 @@ import io.micronaut.http.annotation.*;
 import io.micronaut.http.client.annotation.Client;
 /* protected region imports end */
 
-@Client("${hashtags.url:`http://localhost:8080/hashtags}")
+@Client("${hashtags.url:`http://localhost:8080/hashtags`}")
 public interface HashtagControllerClient {
 
 	@Get("/")

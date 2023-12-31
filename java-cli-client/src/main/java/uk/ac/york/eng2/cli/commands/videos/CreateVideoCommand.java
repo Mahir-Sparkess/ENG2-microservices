@@ -8,6 +8,7 @@ import uk.ac.york.eng2.cli.dto.VideoDTO;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @CommandLine.Command(
         name = "create-video"
@@ -23,14 +24,17 @@ public class CreateVideoCommand implements Runnable {
     @CommandLine.Parameters(index = "1")
     private String title;
 
-    @CommandLine.Parameters(index = "2..")
+    @CommandLine.Parameters(index = "2..", arity = "0..")
     private List<String> tags;
 
     @Override
     public void run() {
         VideoDTO newVideo = new VideoDTO();
         newVideo.setTitle(title);
-        Set<String> tagSet = new HashSet<>(tags);
+        Set<String> tagSet = new HashSet<>();
+        if (tags != null) {
+            tagSet.addAll(tags);
+        }
         newVideo.setTags(tagSet);
 
         HttpResponse<String> r = client.uploadVideo(userId, newVideo);

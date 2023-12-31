@@ -19,9 +19,11 @@ public interface Producer {
 	String TOPIC_LIKE = "like-video";
 	String TOPIC_DISLIKE = "dislike-video";
 	String TOPIC_UPLOAD = "upload-video";
+	String TOPIC_NEW_USER = "new-user";
+	String TOPIC_VIDEO_TAGs = "video-tags";
 	
 	@Topic(TOPIC_VIEW)
-	void viewVideo(/* protected region parameters on begin */@KafkaKey Long userId, Set<String> tagNames/* protected region parameters end */);
+	void viewVideo(/* protected region parameters on begin */@KafkaKey Long userId, Long videoId/* protected region parameters end */);
 	
 	@Topic(TOPIC_LIKE)
 	void likeVideo(/* protected region parameters on begin */@KafkaKey Long userId, Set<String> tagNames/* protected region parameters end */);
@@ -30,6 +32,12 @@ public interface Producer {
 	void dislikeVideo(/* protected region parameters on begin */@KafkaKey Long userId, Set<String> tagNames/* protected region parameters end */);
 	
 	@Topic(TOPIC_UPLOAD)
-	void uploadVideo(/* protected region parameters on begin */@KafkaKey Long videoId, VideoExt video/* protected region parameters end */);
-	
+	void uploadVideo(/* protected region parameters on begin */@KafkaKey Long videoId, VideoDTOExt video/* protected region parameters end */);
+
+	@Topic(TOPIC_NEW_USER)
+	void newUser(/* protected region parameters on begin */@KafkaKey Long userId, String username/* protected region parameters end */);
+
+	@Topic(TOPIC_VIDEO_TAGs)
+	void videoTags(/* protected region parameters on begin */@KafkaKey Long videoId, Set<String> tagNames/* protected region parameters end */);
+
 }

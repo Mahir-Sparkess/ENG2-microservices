@@ -41,7 +41,7 @@ public class HashTag {
     public String toString() {
         return "HashTag{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='#" + name + '\'' +
                 '}';
     }
 }

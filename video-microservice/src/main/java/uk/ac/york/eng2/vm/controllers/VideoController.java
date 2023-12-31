@@ -39,7 +39,6 @@ public class VideoController {
 	/* protected region injects end */
 
 	@Get("/")
-	@Transactional
 	public /* protected region return on begin */Iterable<VideoExt>/* protected region return end */ getVideos(/* protected region parameters on begin */
 	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
@@ -48,7 +47,6 @@ public class VideoController {
 	}
 	
 	@Get("/{id}")
-	@Transactional
 	public VideoExt getVideo(/* protected region parameters on begin */
 	Long id	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
@@ -57,7 +55,6 @@ public class VideoController {
 	}
 
 	@Get("/{id}/tags")
-	@Transactional
 	public Set<HashtagExt> getVideoTags(/* protected region parameters on begin */
 			Long id	/* protected region parameters end */) {
 		/* protected region Method Implementation on begin */
@@ -70,12 +67,14 @@ public class VideoController {
 	}
 	
 	@Post("/upload/{userId}")
+	@Transactional
 	public HttpResponse<String> uploadVideo(/* protected region parameters on begin */
 	Long userId, 
 	@Body VideoDTOExt details	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
+			System.out.println(String.format("user %d not found!", userId));
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
@@ -85,6 +84,7 @@ public class VideoController {
 		newVideo.setUploader(oUser.get());
 
 		Iterable<String> tags = details.getTags();
+
 		Set<HashtagExt> newTags = new HashSet<>();
 		for (String t : tags){
 			Optional<HashtagExt> oTag = hashtagRepository.findByName(t);
@@ -92,6 +92,7 @@ public class VideoController {
 				HashtagExt newTag = new HashtagExt();
 				newTag.setName(t);
 				hashtagRepository.save(newTag);
+				System.out.println(String.format("hashtag #%s created!", newTag.getId()));
 				newTags.add(newTag);
 			} else {
 				newTags.add(oTag.get());
@@ -100,58 +101,71 @@ public class VideoController {
 		newVideo.setTags(newTags);
 		videoRepository.save(newVideo);
 
-		producer.uploadVideo(newVideo.getId(), newVideo);
+		Set<String> tagNames = newVideo.getTags().stream()
+				.map(HashtagExt::getName)
+				.collect(Collectors.toSet());
 
+		VideoDTOExt newVideoDTO = new VideoDTOExt();
+		newVideoDTO.setTitle(newVideo.getTitle());
+		newVideoDTO.setTags(tagNames);
+		producer.uploadVideo(newVideo.getId(), newVideoDTO);
+
+		System.out.println(String.format("video %d created!", newVideo.getId()));
 		return HttpResponse.created(String.format("video %d created!", newVideo.getId()));
 
 	/* protected region Method Implementation end */
 	}
 	
 	@Put("/{videoId}/view/{userId}")
+	@Transactional
 	public HttpResponse<String> viewVideo(/* protected region parameters on begin */
 	Long videoId, 
 	Long userId	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
+			System.out.println(String.format("user %d not found!", userId));
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
 		Optional<VideoExt> oVideo = videoRepository.findById(videoId);
 		if (oVideo.isEmpty()) {
+			System.out.println(String.format("video %d not found!", videoId));
 			return HttpResponse.notFound(String.format("video %d not found!", videoId));
 		}
 
 		VideoExt v = oVideo.get();
-		v.getViewers().add(oUser.get());
+		UserExt u = oUser.get();
+		v.getViewers().add(u);
 		videoRepository.update(v);
 
-		Set<String> kafkaMessage = v.getTags().stream()
-				.map(HashtagExt::getName)
-				.collect(Collectors.toSet());
+		producer.viewVideo(userId, videoId);
 
-		producer.viewVideo(userId, kafkaMessage);
-
-		return HttpResponse.ok(String.format("User %s viewed Video %d", oUser.get().getUsername(), v.getId()));
+		System.out.println(String.format("User %s viewed Video %d", u.getUsername(), v.getId()));
+		return HttpResponse.ok(String.format("User %s viewed Video %d", u.getUsername(), v.getId()));
 	/* protected region Method Implementation end */
 	}
 	
 	@Put("/{videoId}/like/{userId}")
+	@Transactional
 	public HttpResponse<String> likeVideo(/* protected region parameters on begin */
 	Long videoId, 
 	Long userId	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
+			System.out.println(String.format("user %d not found!", userId));
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
 		Optional<VideoExt> oVideo = videoRepository.findById(videoId);
 		if (oVideo.isEmpty()) {
+			System.out.println(String.format("video %d not found!", videoId));
 			return HttpResponse.notFound(String.format("video %d not found!", videoId));
 		}
 
 		VideoExt v = oVideo.get();
+		UserExt u = oUser.get();
 
 		Set<String> kafkaMessage = v.getTags().stream()
 				.map(HashtagExt::getName)
@@ -159,26 +173,31 @@ public class VideoController {
 
 		producer.likeVideo(userId, kafkaMessage);
 
-		return HttpResponse.ok(String.format("User %s liked Video %d", oUser.get().getUsername(), v.getId()));
+		System.out.println(String.format("User %s liked Video %d", u.getUsername(), v.getId()));
+		return HttpResponse.ok(String.format("User %s liked Video %d", u.getUsername(), v.getId()));
 	/* protected region Method Implementation end */
 	}
 	
 	@Put("/{videoId}/dislike/{userId}")
+	@Transactional
 	public HttpResponse<String> dislikeVideo(/* protected region parameters on begin */
 	Long videoId, 
 	Long userId	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
+			System.out.println(String.format("user %d not found!", userId));
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
 		Optional<VideoExt> oVideo = videoRepository.findById(videoId);
 		if (oVideo.isEmpty()) {
+			System.out.println(String.format("video %d not found!", videoId));
 			return HttpResponse.notFound(String.format("video %d not found!", videoId));
 		}
 
 		VideoExt v = oVideo.get();
+		UserExt u = oUser.get();
 
 		Set<String> kafkaMessage = v.getTags().stream()
 				.map(HashtagExt::getName)
@@ -186,7 +205,8 @@ public class VideoController {
 
 		producer.dislikeVideo(userId, kafkaMessage);
 
-		return HttpResponse.ok(String.format("User %s disliked Video %d", oUser.get().getUsername(), v.getId()));
+		System.out.println(String.format("User %s disliked Video %d", u.getUsername(), v.getId()));
+		return HttpResponse.ok(String.format("User %s disliked Video %d", u.getUsername(), v.getId()));
 	/* protected region Method Implementation end */
 	}
 	

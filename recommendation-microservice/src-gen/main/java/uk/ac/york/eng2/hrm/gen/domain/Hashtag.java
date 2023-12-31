@@ -15,12 +15,6 @@ public class Hashtag {
 	@Column(nullable = false)
 	private String name;
 	
-	@Column(nullable = false)
-	private Long likes;
-	
-	@Column(nullable = false)
-	private Long dislikes;
-	
 	public Long getId() { return id; }
 	
 	public void setId(Long id) { this.id = id;}
@@ -28,14 +22,5 @@ public class Hashtag {
 	public String getName() { return name; }
 	
 	public void setName(String name) { this.name = name;}
-	
-	public Long getLikes() { return likes; }
-	
-	public void setLikes(Long likes) { this.likes = likes;}
-	
-	public Long getDislikes() { return dislikes; }
-	
-	public void setDislikes(Long dislikes) { this.dislikes = dislikes;}
-	
 
 }

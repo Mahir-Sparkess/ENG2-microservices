@@ -62,8 +62,6 @@ public class Video {
         return "Video{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", uploader=" + uploader +
-                ", tags=" + tags +
                 '}';
     }
 }

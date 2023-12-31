@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import uk.ac.york.eng2.vm.domain.UserExt;
 import uk.ac.york.eng2.vm.domain.VideoExt;
+import uk.ac.york.eng2.vm.events.Producer;
 import uk.ac.york.eng2.vm.gen.domain.*;
 import uk.ac.york.eng2.vm.gen.dto.*;
 import uk.ac.york.eng2.vm.repositories.UserRepository;
@@ -20,6 +21,9 @@ import uk.ac.york.eng2.vm.repositories.VideoRepository;
 public class UserController {
 
 	/* protected region injects on begin */
+	@Inject
+	Producer producer;
+
 	@Inject
 	UserRepository userRepository;
 
@@ -54,7 +58,9 @@ public class UserController {
 		newUser.setUsername(details.getUsername());
 
 		userRepository.save(newUser);
+		producer.newUser(newUser.getId(), newUser.getUsername());
 
+		System.out.println(String.format("User %d created", newUser.getId()));
 		return HttpResponse.created(String.format("User %d created", newUser.getId()));
 	/* protected region Method Implementation end */
 	}
