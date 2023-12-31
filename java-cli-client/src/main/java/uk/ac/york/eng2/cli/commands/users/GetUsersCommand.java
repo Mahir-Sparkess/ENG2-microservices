@@ -5,17 +5,17 @@ import picocli.CommandLine;
 import uk.ac.york.eng2.cli.domain.User;
 
 @CommandLine.Command(
-        name="get-users"
+        name = "get-users"
 )
-public class GetUsersCommand implements Runnable{
+public class GetUsersCommand implements Runnable {
+
     @Inject
-    private UsersClient client;
+    private UserControllerClient client;
 
     @Override
     public void run() {
-        Iterable<User> users = client.list();
-        for (User user: users) {
-            System.out.println(user);
+        for (User u :  client.getUsers()){
+            System.out.println(u);
         }
     }
 }

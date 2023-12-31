@@ -11,7 +11,9 @@ public class User {
 
     private String username;
 
-    private Set<Video> watchedVideos;
+    private Set<Video> viewed;
+
+    private Set<Video> uploads;
 
     public Long getId() {
         return id;
@@ -29,12 +31,20 @@ public class User {
         this.username = username;
     }
 
-    public Set<Video> getWatchedVideos() {
-        return watchedVideos;
+    public Set<Video> getViewed() {
+        return viewed;
     }
 
-    public void setWatchedVideos(Set<Video> watchedVideos) {
-        this.watchedVideos = watchedVideos;
+    public void setViewed(Set<Video> viewed) {
+        this.viewed = viewed;
+    }
+
+    public Set<Video> getUploads() {
+        return uploads;
+    }
+
+    public void setUploads(Set<Video> uploads) {
+        this.uploads = uploads;
     }
 
     @Override

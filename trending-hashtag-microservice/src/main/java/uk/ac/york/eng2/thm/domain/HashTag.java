@@ -3,10 +3,12 @@ package uk.ac.york.eng2.thm.domain;
 import io.micronaut.serde.annotation.Serdeable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Serdeable
 public class HashTag {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -14,24 +16,27 @@ public class HashTag {
     @Column(nullable = false)
     private String name;
 
+    @Min(0)
     @Column(nullable = false)
     private Integer likes;
 
+    @Min(0)
     @Column(nullable = false)
     private Integer dislikes;
 
+    @Min(0)
     @Column(nullable = false)
-    private Integer trendingViews;
+    private Long trendingActivity;
 
     @Column(nullable = false)
     private Long latestActivity;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,7 +47,7 @@ public class HashTag {
         this.name = name;
     }
 
-    public Integer getLikes() {
+    public @Min(0) Integer getLikes() {
         return likes;
     }
 
@@ -50,7 +55,7 @@ public class HashTag {
         this.likes = likes;
     }
 
-    public Integer getDislikes() {
+    public @Min(0) Integer getDislikes() {
         return dislikes;
     }
 
@@ -58,12 +63,12 @@ public class HashTag {
         this.dislikes = dislikes;
     }
 
-    public Integer getTrendingViews() {
-        return trendingViews;
+    public Long getTrendingActivity() {
+        return trendingActivity;
     }
 
-    public void setTrendingViews(Integer trendingViews) {
-        this.trendingViews = trendingViews;
+    public void setTrendingActivity(Long trendingViews) {
+        this.trendingActivity = trendingViews;
     }
 
     public Long getLatestActivity() {

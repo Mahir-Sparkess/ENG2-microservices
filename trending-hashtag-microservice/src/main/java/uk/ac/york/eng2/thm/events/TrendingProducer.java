@@ -8,13 +8,8 @@ import uk.ac.york.eng2.thm.domain.HashTag;
 
 @KafkaClient
 public interface TrendingProducer {
-    String TOPIC_LIKE_DISLIKE = "video-like-dislike";
-    String TOPIC_TAG_LIKE = "tag-like";
-    String TOPIC_CREATE_HASHTAG = "create-hashtag";
+    String TOPIC_TRENDING_METRIC = "trending-metric";
 
-    @Topic(TOPIC_LIKE_DISLIKE)
-    void likeDislikeVideo(@KafkaKey Long id, Boolean like);
-
-    @Topic(TOPIC_TAG_LIKE)
-    void TagLikeDislike(@KafkaKey Long id, HashTag tag);
+    @Topic(TOPIC_TRENDING_METRIC)
+    void trendingHashtag(@KafkaKey Long id, HashTag hashTag);
 }

@@ -11,6 +11,8 @@ public class Video {
 
     private String title;
 
+    private User uploader;
+
     private Set<User> viewers;
 
     private Set<HashTag> tags;
@@ -45,6 +47,14 @@ public class Video {
 
     public void setTags(Set<HashTag> tags) {
         this.tags = tags;
+    }
+
+    public User getUploader() {
+        return uploader;
+    }
+
+    public void setUploader(User uploader) {
+        this.uploader = uploader;
     }
 
     @Override

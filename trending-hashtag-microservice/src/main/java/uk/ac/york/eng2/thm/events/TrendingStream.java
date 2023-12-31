@@ -24,11 +24,11 @@ public class TrendingStream {
     @Singleton
     public KStream<WindowedIdentifier, Long> likesByHour(ConfiguredStreamBuilder builder){
         Properties props = builder.getConfiguration();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "likes-metrics");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "trend-metric");
         props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE);
 
         KStream<Long, HashTag> hashTagStream = builder
-                .stream(TrendingProducer.TOPIC_TAG_LIKE, Consumed.with(Serdes.Long(), serdeRegistry.getSerde(HashTag.class)));
+                .stream(TrendingProducer.TOPIC_TRENDING_METRIC, Consumed.with(Serdes.Long(), serdeRegistry.getSerde(HashTag.class)));
 
         KStream<WindowedIdentifier, Long> stream = hashTagStream.groupByKey()
                 .windowedBy(TimeWindows.of(Duration.ofHours(1)).advanceBy(Duration.ofHours(1)))
