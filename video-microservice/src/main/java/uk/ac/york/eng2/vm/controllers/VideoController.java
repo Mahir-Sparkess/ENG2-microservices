@@ -74,7 +74,7 @@ public class VideoController {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
-			System.out.println(String.format("user %d not found!", userId));
+			System.out.printf("user %d not found!%n", userId);
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
@@ -92,7 +92,7 @@ public class VideoController {
 				HashtagExt newTag = new HashtagExt();
 				newTag.setName(t);
 				hashtagRepository.save(newTag);
-				System.out.println(String.format("hashtag #%s created!", newTag.getId()));
+				System.out.printf("hashtag #%s created!%n", newTag.getId());
 				newTags.add(newTag);
 			} else {
 				newTags.add(oTag.get());
@@ -110,7 +110,7 @@ public class VideoController {
 		newVideoDTO.setTags(tagNames);
 		producer.uploadVideo(newVideo.getId(), newVideoDTO);
 
-		System.out.println(String.format("video %d created!", newVideo.getId()));
+		System.out.printf("video %d created!%n", newVideo.getId());
 		return HttpResponse.created(String.format("video %d created!", newVideo.getId()));
 
 	/* protected region Method Implementation end */
@@ -124,13 +124,13 @@ public class VideoController {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
-			System.out.println(String.format("user %d not found!", userId));
+			System.out.printf("user %d not found!%n", userId);
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
 		Optional<VideoExt> oVideo = videoRepository.findById(videoId);
 		if (oVideo.isEmpty()) {
-			System.out.println(String.format("video %d not found!", videoId));
+			System.out.printf("video %d not found!%n", videoId);
 			return HttpResponse.notFound(String.format("video %d not found!", videoId));
 		}
 
@@ -141,7 +141,7 @@ public class VideoController {
 
 		producer.viewVideo(userId, videoId);
 
-		System.out.println(String.format("User %s viewed Video %d", u.getUsername(), v.getId()));
+		System.out.printf("User %s viewed Video %d%n", u.getUsername(), v.getId());
 		return HttpResponse.ok(String.format("User %s viewed Video %d", u.getUsername(), v.getId()));
 	/* protected region Method Implementation end */
 	}
@@ -154,13 +154,13 @@ public class VideoController {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
-			System.out.println(String.format("user %d not found!", userId));
+			System.out.printf("user %d not found!%n", userId);
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
 		Optional<VideoExt> oVideo = videoRepository.findById(videoId);
 		if (oVideo.isEmpty()) {
-			System.out.println(String.format("video %d not found!", videoId));
+			System.out.printf("video %d not found!%n", videoId);
 			return HttpResponse.notFound(String.format("video %d not found!", videoId));
 		}
 
@@ -173,7 +173,7 @@ public class VideoController {
 
 		producer.likeVideo(userId, kafkaMessage);
 
-		System.out.println(String.format("User %s liked Video %d", u.getUsername(), v.getId()));
+		System.out.printf("User %s liked Video %d%n", u.getUsername(), v.getId());
 		return HttpResponse.ok(String.format("User %s liked Video %d", u.getUsername(), v.getId()));
 	/* protected region Method Implementation end */
 	}
@@ -186,13 +186,13 @@ public class VideoController {
 	/* protected region Method Implementation on begin */
 		Optional<UserExt> oUser = userRepository.findById(userId);
 		if (oUser.isEmpty()) {
-			System.out.println(String.format("user %d not found!", userId));
+			System.out.printf("user %d not found!%n", userId);
 			return HttpResponse.notFound(String.format("user %d not found!", userId));
 		}
 
 		Optional<VideoExt> oVideo = videoRepository.findById(videoId);
 		if (oVideo.isEmpty()) {
-			System.out.println(String.format("video %d not found!", videoId));
+			System.out.printf("video %d not found!%n", videoId);
 			return HttpResponse.notFound(String.format("video %d not found!", videoId));
 		}
 
@@ -205,7 +205,7 @@ public class VideoController {
 
 		producer.dislikeVideo(userId, kafkaMessage);
 
-		System.out.println(String.format("User %s disliked Video %d", u.getUsername(), v.getId()));
+		System.out.printf("User %s disliked Video %d%n", u.getUsername(), v.getId());
 		return HttpResponse.ok(String.format("User %s disliked Video %d", u.getUsername(), v.getId()));
 	/* protected region Method Implementation end */
 	}

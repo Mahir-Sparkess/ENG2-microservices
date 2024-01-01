@@ -8,7 +8,7 @@ datasources:
     driver-class-name: org.mariadb.jdbc.Driver
     db-type: mariadb
     dialect: MYSQL
-    url: jdbc:mariadb://localhost:3306/hrm
+    url: jdbc:mariadb://db/hrm
     username: hrm
     password: hrmsecret
 netty:

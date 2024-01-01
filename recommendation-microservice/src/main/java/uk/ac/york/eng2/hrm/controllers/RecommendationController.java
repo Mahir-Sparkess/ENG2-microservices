@@ -23,7 +23,7 @@ public class RecommendationController {
 	/* protected region injects end */
 
 	@Get("/")
-	public /* protected region return on begin */Object/* protected region return end */ getHealthCheck(/* protected region parameters on begin */
+	public /* protected region return on begin */Iterable<HashtagExt>/* protected region return end */ getHealthCheck(/* protected region parameters on begin */
 	/* protected region parameters end */) {
 	/* protected region Method Implementation on begin */
 		return hRepo.findAll();

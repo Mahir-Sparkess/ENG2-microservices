@@ -64,7 +64,7 @@ public class Consumer {
 		video.getViewers().add(user);
 		vRepo.update(video);
 
-		System.out.println(String.format("User %d has watched %d", user.getUserId(), video.getVideoId()));
+		System.out.printf("User %d has watched %d%n", user.getUserId(), video.getVideoId());
 		/* protected region Method Implementation end */
 		}
 
@@ -81,7 +81,7 @@ public class Consumer {
 		newVideo.setTitle(videoDTO.getTitle());
 		newVideo.setTags(new HashSet<>());
 		newVideo.setViewers(new HashSet<>());
-		System.out.println(String.format("ADDED Video {vmId = %d, title = %s}", newVideo.getVideoId(), newVideo.getTitle()));
+		System.out.printf("ADDED Video {vmId = %d, title = %s}%n", newVideo.getVideoId(), newVideo.getTitle());
 
 		Set<HashtagExt> vTags = new HashSet<>();
 
@@ -91,7 +91,7 @@ public class Consumer {
 				HashtagExt newTag = new HashtagExt();
 				newTag.setName(name);
 				hRepo.save(newTag);
-				System.out.println(String.format("ADDED Hashtag #%s", newTag.getName()));
+				System.out.printf("ADDED Hashtag #%s%n", newTag.getName());
 				vTags.add(newTag);
 			} else {
 				vTags.add(oTag.get());
@@ -101,7 +101,7 @@ public class Consumer {
 		if (!vTags.isEmpty()) { newVideo.setTags(vTags); }
 
 		vRepo.save(newVideo);
-		System.out.println(String.format("Video %d has been tagged with %s", newVideo.getVideoId(), videoDTO.getTags()));
+		System.out.printf("Video %d has been tagged with %s%n", newVideo.getVideoId(), videoDTO.getTags());
 		/* protected region Method Implementation end */
 	}
 
@@ -118,7 +118,7 @@ public class Consumer {
 		newUser.setUsername(username);
 
 		uRepo.save(newUser);
-		System.out.println(String.format("ADDED User {vmId = %d, username = %s}", newUser.getUserId(), newUser.getUsername()));
+		System.out.printf("ADDED User {vmId = %d, username = %s}%n", newUser.getUserId(), newUser.getUsername());
 		/* protected region Method Implementation end */
 	}
 }
