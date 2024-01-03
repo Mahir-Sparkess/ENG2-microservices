@@ -1,6 +1,7 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.7.10"
+    id("jacoco")
 }
 
 version = "0.1"
@@ -23,6 +24,8 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    testImplementation("org.awaitility:awaitility:4.2.0")
+    testImplementation("org.apache.kafka:kafka-streams-test-utils:2.8.2")
 }
 
 
@@ -43,9 +46,17 @@ micronaut {
         annotations("uk.ac.york.eng2.sm.*")
     }
 }
+
 sourceSets {
     main.java.srcDirs = ['src/main/java', 'src-gen/main/java']
 }
 
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+}
 
 

@@ -14,7 +14,7 @@ import java.util.Set;
 @Serdeable
 public class VideoExt extends Video {
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="video_viewers")
     @JsonIgnore
     private Set<UserExt> viewers;
